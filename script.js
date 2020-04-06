@@ -12,6 +12,44 @@ class Puzzle {
     this.size = SIZES[localStorage.getItem('size')] || SIZES['4x4'];
   }
 
+  createButtons() {
+    this.buttons.innerHTML = '';
+
+    const btnShuffle = document.createElement('button');
+    btnShuffle.textContent = 'Shuffle';
+    btnShuffle.id = 'btn-shuffle';
+    btnShuffle.classList.add('btn', 'btn-big');
+    this.buttons.appendChild(btnShuffle);
+
+    const btnResults = document.createElement('button');
+    btnResults.textContent = 'Results';
+    btnResults.id = 'btn-results';
+    btnResults.classList.add('btn', 'btn-big');
+    this.buttons.appendChild(btnResults);
+  }
+
+  createInfoTop() {
+    this.infoTop.innerHTML = '';
+
+    const movesLabel = document.createElement('span');
+    movesLabel.textContent = 'Moves: ';
+    this.infoTop.appendChild(movesLabel);
+
+    const movesCount = document.createElement('span');
+    movesCount.id = 'moves';
+    movesCount.textContent = '00';
+    this.infoTop.appendChild(movesCount);
+
+    const timeLabel = document.createElement('span');
+    timeLabel.textContent = 'Time: ';
+    this.infoTop.appendChild(timeLabel);
+
+    const timeCount = document.createElement('span');
+    timeCount.id = 'time';
+    timeCount.textContent = '00:00';
+    this.infoTop.appendChild(timeCount);
+  }
+
   createBoard() {
     this.board.innerHTML = '';
     let n = 0;
@@ -42,7 +80,21 @@ class Puzzle {
     this.board.style.gridTemplateColumns = `repeat(${this.size}, 1fr)`;
   }
 
+  createInfoBottom() {
+    this.infoBottom.innerHTML = '';
+
+    for (const size of Object.keys(SIZES)) {
+      const btn = document.createElement('button');
+      btn.id = `btn-${size}`;
+      btn.classList.add('btn', 'btn-small');
+      btn.textContent = size;
+      this.infoBottom.appendChild(btn);
+    }
+  }
+
   init() {
+    document.body.innerHTML = '';
+
     // Create main elements
     this.wrapper = document.createElement('main');
     this.title = document.createElement('h1');
@@ -55,7 +107,7 @@ class Puzzle {
     this.wrapper.classList.add('wrapper');
 
     this.title.classList.add('title');
-    this.title.textContent = 'RSS Gem puzzle';
+    this.title.textContent = 'RSS Gem puzzle (not finished yet)';
 
     this.buttons.classList.add('buttons');
     this.infoTop.classList.add('infoTop');
@@ -75,6 +127,10 @@ class Puzzle {
 
 window.addEventListener('DOMContentLoaded', () => {
   const puzzle = new Puzzle();
+
   puzzle.init();
+  puzzle.createButtons();
+  puzzle.createInfoTop();
   puzzle.createBoard();
+  puzzle.createInfoBottom();
 });

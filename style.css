@@ -26,6 +26,41 @@ body {
   margin: 2% auto;
 }
 
+.buttons {
+  margin: auto;
+}
+
+.btn {
+  background: #003333;
+  font-weight: bolder;
+  border: none;
+  border-radius: 4px;
+  text-transform: uppercase;
+  color: #fff;
+  cursor: pointer;
+  outline: none;
+}
+
+.btn-big {
+  font-size: 1.4rem;
+  margin: 18px 4px;
+  padding: 10px 20px;
+}
+
+.btn-small {
+  font-size: 1rem;
+  margin: 8px 4px;
+  padding: 5px;
+}
+
+.infoTop {
+  margin: auto;
+}
+
+#moves {
+  margin-right: 15px;
+}
+
 .board {
   display: grid;
   grid-gap: 2px;
@@ -54,14 +89,18 @@ body {
   cursor: pointer;
 }
 
-.empty {
-  background: transparent;
-}
-
 .number.light {
   background: #226666;
 }
 
 .number.dark {
   background: #003333;
+}
+
+.empty {
+  background: transparent;
+}
+
+.infoBottom {
+  margin: auto;
 }
