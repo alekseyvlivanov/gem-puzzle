@@ -1,0 +1,6 @@
+# Netlify redirects
+
+https://quirky-allen-1a9482.netlify.com/* https://gem-puzzle.chessiah.xyz/:splat 301!
+http://quirky-allen-1a9482.netlify.com/* https://gem-puzzle.chessiah.xyz/:splat 301!
+
+http://gem-puzzle.chessiah.xyz/* https://gem-puzzle.chessiah.xyz/:splat 301!
