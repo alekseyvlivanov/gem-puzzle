@@ -208,7 +208,10 @@ class Puzzle {
             .padStart(2, '0');
 
         setTimeout(
-          () => alert(`Ура! Вы решили головоломку за ${this.moves} ходов`),
+          () =>
+            alert(
+              `Ура! Вы решили головоломку за ${this.timeCount.textContent} и ${this.moves} ходов`,
+            ),
           0,
         );
       }
