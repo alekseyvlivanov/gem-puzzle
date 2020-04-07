@@ -10,7 +10,7 @@ const SIZES = {
 class Puzzle {
   constructor() {
     this.shuffled = false;
-    this.size = SIZES[localStorage.getItem('size')] || SIZES['4x4'];
+    this.size = SIZES['4x4'];
   }
 
   createButtons() {
@@ -22,6 +22,20 @@ class Puzzle {
     btnShuffle.setAttribute('title', 'Shuffle from current position');
     btnShuffle.classList.add('btn', 'btn-big');
     this.buttons.appendChild(btnShuffle);
+
+    const btnSave = document.createElement('button');
+    btnSave.textContent = 'Save';
+    btnSave.id = 'btn-save';
+    btnSave.setAttribute('title', 'Save current position');
+    btnSave.classList.add('btn', 'btn-big');
+    this.buttons.appendChild(btnSave);
+
+    const btnRestore = document.createElement('button');
+    btnRestore.textContent = 'Restore';
+    btnRestore.id = 'btn-restore';
+    btnRestore.setAttribute('title', 'Restore from last saved position');
+    btnRestore.classList.add('btn', 'btn-big');
+    this.buttons.appendChild(btnRestore);
 
     const btnResults = document.createElement('button');
     btnResults.textContent = 'Results';
@@ -99,39 +113,49 @@ class Puzzle {
   }
 
   createListeners() {
-    this.board.addEventListener('click', (e) => {
-      this.shiftCell(e.target);
-    });
+    document
+      .getElementById('btn-shuffle')
+      .addEventListener('click', () => this.shuffleBoard());
+
+    document
+      .getElementById('btn-save')
+      .addEventListener('click', () => this.saveBoard());
+
+    document
+      .getElementById('btn-restore')
+      .addEventListener('click', () => this.restoreBoard());
 
     document
       .getElementById('btn-results')
       .addEventListener('click', () => this.showResults());
 
-    document
-      .getElementById('btn-shuffle')
-      .addEventListener('click', () => this.shuffleBoard());
+    this.board.addEventListener('click', (e) => {
+      this.shiftCell(e.target);
+    });
 
     this.infoBottom.addEventListener('click', (e) => {
       if (e.target.tagName === 'BUTTON') {
         this.size = SIZES[e.target.id];
-        localStorage.setItem('size', e.target.id);
         this.createBoard();
       }
     });
   }
 
   checkSolved() {
-    if (!this.getCell(this.size, this.size).classList.contains('empty')) {
-      return false;
-    }
-
     let n = 0;
+    let maxN = this.size ** 2 - 1;
 
     for (let i = 1; i <= this.size; i += 1) {
       for (let j = 1; j <= this.size; j += 1) {
         n += 1;
-        if (this.getCell(this.size, this.size).textContent !== n) {
-          return false;
+        if (n <= maxN) {
+          if (parseInt(this.getCell(i, j).textContent) !== n) {
+            return false;
+          }
+        } else {
+          if (!this.getCell(i, j).classList.contains('empty')) {
+            return false;
+          }
         }
       }
     }
@@ -154,6 +178,13 @@ class Puzzle {
 
         emptyAdjacentCell.id = tmp.id;
         emptyAdjacentCell.style.order = tmp.order;
+      }
+    }
+
+    if (this.shuffled) {
+      if (this.checkSolved()) {
+        this.shuffled = false;
+        setTimeout(() => alert('Ура! Вы решили головоломку'), 500);
       }
     }
   }
@@ -211,7 +242,6 @@ class Puzzle {
   shuffleBoard() {
     let previousCell;
 
-    // const interval = setInterval(() => {
     for (let i = 0; i < 100; i += 1) {
       const emptyCell = this.getEmptyCell();
       const adjacentCells = this.getAdjacentCells(emptyCell);
@@ -228,8 +258,36 @@ class Puzzle {
       this.shiftCell(previousCell);
     }
 
-    // clearInterval(interval);
-    // }, 5);
+    this.shuffled = true;
+  }
+
+  saveBoard() {
+    if (confirm('Save current position?')) {
+      localStorage.setItem(
+        'lastSaved',
+        JSON.stringify({
+          size: this.size,
+          board: JSON.stringify(Array.from(this.board.children)),
+        }),
+      );
+    }
+  }
+
+  restoreBoard() {
+    if (confirm('Restore last saved position?')) {
+      const lastSaved = JSON.parse(localStorage.getItem('lastSaved'));
+      if (lastSaved) {
+        if (lastSaved.size && lastSaved.board) {
+          this.size = lastSaved.size;
+          // this.board.innerHTML = lastSaved.board;
+        } else {
+          localStorage.removeItem('lastSaved');
+          alert('Bad saved data! Cleared');
+        }
+      } else {
+        alert('No saved position!');
+      }
+    }
   }
 
   showResults() {}
