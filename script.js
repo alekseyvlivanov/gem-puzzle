@@ -11,6 +11,7 @@ class Puzzle {
   constructor() {
     this.moves = 0;
     this.time = 0;
+    this.timerStart = 0;
     this.size = SIZES['4x4'];
     this.shuffled = false;
   }
@@ -54,19 +55,19 @@ class Puzzle {
     movesLabel.textContent = 'Moves: ';
     this.infoTop.appendChild(movesLabel);
 
-    const movesCount = document.createElement('span');
-    movesCount.id = 'moves';
-    movesCount.textContent = '00';
-    this.infoTop.appendChild(movesCount);
+    this.movesCount = document.createElement('span');
+    this.movesCount.id = 'moves';
+    this.movesCount.textContent = '000';
+    this.infoTop.appendChild(this.movesCount);
 
     const timeLabel = document.createElement('span');
     timeLabel.textContent = 'Time: ';
     this.infoTop.appendChild(timeLabel);
 
-    const timeCount = document.createElement('span');
-    timeCount.id = 'time';
-    timeCount.textContent = '00:00';
-    this.infoTop.appendChild(timeCount);
+    this.timeCount = document.createElement('span');
+    this.timeCount.id = 'time';
+    this.timeCount.textContent = '00:00';
+    this.infoTop.appendChild(this.timeCount);
   }
 
   createBoard() {
@@ -99,6 +100,12 @@ class Puzzle {
     }
 
     this.board.style.gridTemplateColumns = `repeat(${this.size}, 1fr)`;
+    if (this.timerId) {
+      this.moves = 0;
+      this.movesCount.textContent = '000';
+      clearTimeout(this.timerId);
+      this.timeCount.textContent = '00:00';
+    }
   }
 
   createInfoBottom() {
@@ -184,9 +191,26 @@ class Puzzle {
     }
 
     if (this.shuffled) {
+      this.moves += 1;
+      this.movesCount.textContent = this.moves.toString().padStart(3, '0');
       if (this.checkSolved()) {
         this.shuffled = false;
-        setTimeout(() => alert('Ура! Вы решили головоломку'), 0);
+        clearInterval(this.timerId);
+
+        this.time = (Date.now() - this.timerStart) / 1000;
+        this.timeCount.textContent =
+          parseInt(this.time / 60)
+            .toString()
+            .padStart(2, '0') +
+          ':' +
+          parseInt(this.time % 60)
+            .toString()
+            .padStart(2, '0');
+
+        setTimeout(
+          () => alert(`Ура! Вы решили головоломку за ${this.moves} ходов`),
+          0,
+        );
       }
     }
   }
@@ -261,6 +285,16 @@ class Puzzle {
     }
 
     this.shuffled = true;
+
+    if (this.timerId) {
+      this.moves = 0;
+      this.movesCount.textContent = '000';
+      clearTimeout(this.timerId);
+      this.timeCount.textContent = '00:00';
+    }
+
+    this.timerStart = Date.now();
+    this.startTimer();
   }
 
   saveBoard() {
@@ -268,6 +302,7 @@ class Puzzle {
       const cellsObject = {
         moves: this.moves,
         time: this.time,
+        timerStart: this.timerStart,
         shuffled: this.shuffled,
         size: this.size,
       };
@@ -288,8 +323,23 @@ class Puzzle {
     if (confirm('Restore last saved position?')) {
       const lastSaved = JSON.parse(localStorage.getItem('lastSaved'));
       if (lastSaved) {
+        if (this.timerId) {
+          clearTimeout(this.timerId);
+        }
+
         this.moves = lastSaved.moves;
+        this.movesCount.textContent = this.moves.toString().padStart('0', 3);
+
         this.time = lastSaved.time;
+        this.timeCount.textContent =
+          parseInt(this.time / 60)
+            .toString()
+            .padStart(2, '0') +
+          ':' +
+          parseInt(this.time % 60)
+            .toString()
+            .padStart(2, '0');
+
         this.shuffled = lastSaved.shuffled;
         this.size = lastSaved.size;
 
@@ -310,10 +360,27 @@ class Puzzle {
 
           this.board.appendChild(cell);
         }
+
+        this.timerStart = Date.now() - this.time * 1000;
+        this.startTimer();
       } else {
         alert('No saved position!');
       }
     }
+  }
+
+  startTimer() {
+    this.timerId = setInterval(() => {
+      this.time = (Date.now() - this.timerStart) / 1000;
+      this.timeCount.textContent =
+        parseInt(this.time / 60)
+          .toString()
+          .padStart(2, '0') +
+        ':' +
+        parseInt(this.time % 60)
+          .toString()
+          .padStart(2, '0');
+    }, 1000);
   }
 
   showResults() {
