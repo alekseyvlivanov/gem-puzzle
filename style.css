@@ -95,7 +95,7 @@ body {
 }
 
 .number {
-  font-size: 7vmin;
+  font-size: 6vmin;
   font-weight: bold;
   color: var(--number-color);
   cursor: pointer;
