@@ -10,6 +10,7 @@ const SIZES = {
 class Puzzle {
   constructor() {
     this.size = SIZES[localStorage.getItem('size')] || SIZES['4x4'];
+    // this.solved = true;
   }
 
   createButtons() {
@@ -61,6 +62,8 @@ class Puzzle {
         cell.classList.add('cell');
 
         n += 1;
+        cell.style.order = n;
+
         if (n < this.size ** 2) {
           cell.classList.add('number');
           cell.classList.add(
@@ -90,6 +93,91 @@ class Puzzle {
       btn.textContent = size;
       this.infoBottom.appendChild(btn);
     }
+  }
+
+  createListeners() {
+    this.board.addEventListener('click', (e) => {
+      this.shiftCell(e.target);
+    });
+
+    document
+      .getElementById('btn-results')
+      .addEventListener('click', this.showResults);
+
+    document
+      .getElementById('btn-shuffle')
+      .addEventListener('click', this.shuffleBoard);
+  }
+
+  shiftCell(cell) {
+    if (!cell.classList.contains('empty')) {
+      const emptyAdjacentCell = this.getEmptyAdjacentCell(cell);
+
+      if (emptyAdjacentCell) {
+        const tmp = {
+          id: cell.id,
+          order: cell.style.order,
+        };
+
+        cell.id = emptyAdjacentCell.id;
+        cell.style.order = emptyAdjacentCell.style.order;
+
+        emptyAdjacentCell.id = tmp.id;
+        emptyAdjacentCell.style.order = tmp.order;
+      }
+    }
+  }
+
+  getEmptyAdjacentCell(cell) {
+    const adjacentCells = this.getAdjacentCells(cell);
+
+    for (const e of adjacentCells) {
+      if (e.classList.contains('empty')) {
+        return e;
+      }
+    }
+
+    return false;
+  }
+
+  getAdjacentCells(cell) {
+    const adjacentCells = [];
+
+    const cellLocation = cell.id.split('-');
+    const cellRow = parseInt(cellLocation[1]);
+    const cellCol = parseInt(cellLocation[2]);
+
+    if (cellRow < this.size) {
+      adjacentCells.push(this.getCell(cellRow + 1, cellCol));
+    }
+
+    if (cellRow > 1) {
+      adjacentCells.push(this.getCell(cellRow - 1, cellCol));
+    }
+
+    if (cellCol < this.size) {
+      adjacentCells.push(this.getCell(cellRow, cellCol + 1));
+    }
+
+    if (cellCol > 1) {
+      adjacentCells.push(this.getCell(cellRow, cellCol - 1));
+    }
+
+    return adjacentCells;
+  }
+
+  getCell(row, col) {
+    return document.getElementById(`cell-${row}-${col}`);
+  }
+
+  getEmptyCell() {
+    return this.board.querySelector('.empty');
+  }
+
+  showResults() {}
+
+  shuffleBoard() {
+    const interval = setInterval(() => {}, 5);
   }
 
   init() {
@@ -133,4 +221,5 @@ window.addEventListener('DOMContentLoaded', () => {
   puzzle.createInfoTop();
   puzzle.createBoard();
   puzzle.createInfoBottom();
+  puzzle.createListeners();
 });
