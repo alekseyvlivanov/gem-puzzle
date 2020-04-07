@@ -25,7 +25,7 @@ html {
 
 body {
   background: var(--main-bg-color);
-  font-size: 1.8rem;
+  font-size: 1.6rem;
   color: var(--main-color);
 }
 
@@ -51,6 +51,7 @@ body {
   color: var(--btn-text-color);
   cursor: pointer;
   outline: none;
+  user-select: none;
 }
 
 .btn-big {

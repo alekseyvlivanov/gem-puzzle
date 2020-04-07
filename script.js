@@ -9,8 +9,10 @@ const SIZES = {
 
 class Puzzle {
   constructor() {
-    this.shuffled = false;
+    this.moves = 0;
+    this.time = 0;
     this.size = SIZES['4x4'];
+    this.shuffled = false;
   }
 
   createButtons() {
@@ -263,13 +265,22 @@ class Puzzle {
 
   saveBoard() {
     if (confirm('Save current position?')) {
-      localStorage.setItem(
-        'lastSaved',
-        JSON.stringify({
-          size: this.size,
-          board: JSON.stringify(Array.from(this.board.children)),
-        }),
-      );
+      const cellsObject = {
+        moves: this.moves,
+        time: this.time,
+        shuffled: this.shuffled,
+        size: this.size,
+      };
+
+      for (const cell of this.board.children) {
+        cellsObject[cell.style.order] = JSON.stringify(cell, [
+          'id',
+          'className',
+          'textContent',
+        ]);
+      }
+
+      localStorage.setItem('lastSaved', JSON.stringify(cellsObject));
     }
   }
 
@@ -277,12 +288,27 @@ class Puzzle {
     if (confirm('Restore last saved position?')) {
       const lastSaved = JSON.parse(localStorage.getItem('lastSaved'));
       if (lastSaved) {
-        if (lastSaved.size && lastSaved.board) {
-          this.size = lastSaved.size;
-          // this.board.innerHTML = lastSaved.board;
-        } else {
-          localStorage.removeItem('lastSaved');
-          alert('Bad saved data! Cleared');
+        this.moves = lastSaved.moves;
+        this.time = lastSaved.time;
+        this.shuffled = lastSaved.shuffled;
+        this.size = lastSaved.size;
+
+        this.board.style.gridTemplateColumns = `repeat(${this.size}, 1fr)`;
+
+        while (this.board.firstChild) {
+          this.board.removeChild(this.board.firstChild);
+        }
+
+        for (let i = 1; i <= this.size ** 2; i += 1) {
+          const cellObject = JSON.parse(lastSaved[i]);
+          const cell = document.createElement('div');
+
+          cell.id = cellObject.id;
+          cell.className = cellObject.className;
+          cell.textContent = cellObject.textContent;
+          cell.style.order = i;
+
+          this.board.appendChild(cell);
         }
       } else {
         alert('No saved position!');
@@ -290,7 +316,9 @@ class Puzzle {
     }
   }
 
-  showResults() {}
+  showResults() {
+    alert('Not implemented yet..');
+  }
 
   init() {
     document.body.innerHTML = '';
@@ -307,7 +335,7 @@ class Puzzle {
     this.wrapper.classList.add('wrapper');
 
     this.title.classList.add('title');
-    this.title.textContent = 'RSS Gem puzzle (not finished yet)';
+    this.title.textContent = 'RSS Gem puzzle';
 
     this.buttons.classList.add('buttons');
     this.infoTop.classList.add('infoTop');
