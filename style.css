@@ -40,12 +40,14 @@ body {
 }
 
 .buttons {
-  margin: auto;
+  margin: 0 auto;
 }
 
 .btn {
   background: var(--btn-color);
   font-weight: bolder;
+  margin: 8px 4px;
+  padding: 6px;
   border: none;
   border-radius: 4px;
   color: var(--btn-text-color);
@@ -56,19 +58,15 @@ body {
 
 .btn-big {
   font-size: 1.4rem;
-  margin: 18px 4px;
-  padding: 10px 20px;
   text-transform: uppercase;
 }
 
 .btn-small {
   font-size: 1.2rem;
-  margin: 8px 4px;
-  padding: 4px 8px;
 }
 
 .infoTop {
-  margin: auto;
+  margin: 1% auto;
 }
 
 #moves {
@@ -78,8 +76,8 @@ body {
 .board {
   display: grid;
   grid-gap: 2px;
-  height: 50vmin;
-  width: 50vmin;
+  height: 60vmin;
+  width: 60vmin;
   min-height: 300px;
   min-width: 300px;
   margin: 1% auto;
@@ -97,7 +95,7 @@ body {
 }
 
 .number {
-  font-size: 3.6rem;
+  font-size: 4vw;
   font-weight: bold;
   color: var(--number-color);
   cursor: pointer;
@@ -116,5 +114,5 @@ body {
 }
 
 .infoBottom {
-  margin: auto;
+  margin: 1% auto;
 }
