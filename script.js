@@ -9,8 +9,8 @@ const SIZES = {
 
 class Puzzle {
   constructor() {
+    this.shuffled = false;
     this.size = SIZES[localStorage.getItem('size')] || SIZES['4x4'];
-    // this.solved = true;
   }
 
   createButtons() {
@@ -19,12 +19,14 @@ class Puzzle {
     const btnShuffle = document.createElement('button');
     btnShuffle.textContent = 'Shuffle';
     btnShuffle.id = 'btn-shuffle';
+    btnShuffle.setAttribute('title', 'Shuffle from current position');
     btnShuffle.classList.add('btn', 'btn-big');
     this.buttons.appendChild(btnShuffle);
 
     const btnResults = document.createElement('button');
     btnResults.textContent = 'Results';
     btnResults.id = 'btn-results';
+    btnResults.setAttribute('title', 'Best of the Best');
     btnResults.classList.add('btn', 'btn-big');
     this.buttons.appendChild(btnResults);
   }
@@ -86,11 +88,12 @@ class Puzzle {
   createInfoBottom() {
     this.infoBottom.innerHTML = '';
 
-    for (const size of Object.keys(SIZES)) {
+    for (const sizeKey of Object.keys(SIZES)) {
       const btn = document.createElement('button');
-      btn.id = `btn-${size}`;
+      btn.id = sizeKey;
       btn.classList.add('btn', 'btn-small');
-      btn.textContent = size;
+      btn.setAttribute('title', `Create new ${sizeKey} game`);
+      btn.textContent = sizeKey;
       this.infoBottom.appendChild(btn);
     }
   }
@@ -107,6 +110,33 @@ class Puzzle {
     document
       .getElementById('btn-shuffle')
       .addEventListener('click', () => this.shuffleBoard());
+
+    this.infoBottom.addEventListener('click', (e) => {
+      if (e.target.tagName === 'BUTTON') {
+        this.size = SIZES[e.target.id];
+        localStorage.setItem('size', e.target.id);
+        this.createBoard();
+      }
+    });
+  }
+
+  checkSolved() {
+    if (!this.getCell(this.size, this.size).classList.contains('empty')) {
+      return false;
+    }
+
+    let n = 0;
+
+    for (let i = 1; i <= this.size; i += 1) {
+      for (let j = 1; j <= this.size; j += 1) {
+        n += 1;
+        if (this.getCell(this.size, this.size).textContent !== n) {
+          return false;
+        }
+      }
+    }
+
+    return true;
   }
 
   shiftCell(cell) {
@@ -174,7 +204,9 @@ class Puzzle {
     return this.board.querySelector('.empty');
   }
 
-  showResults() {}
+  rand(from, to) {
+    return Math.floor(Math.random() * (to - from + 1)) + from;
+  }
 
   shuffleBoard() {
     let previousCell;
@@ -200,9 +232,7 @@ class Puzzle {
     // }, 5);
   }
 
-  rand(from, to) {
-    return Math.floor(Math.random() * (to - from + 1)) + from;
-  }
+  showResults() {}
 
   init() {
     document.body.innerHTML = '';
