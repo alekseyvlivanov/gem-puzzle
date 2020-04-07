@@ -102,11 +102,11 @@ class Puzzle {
 
     document
       .getElementById('btn-results')
-      .addEventListener('click', this.showResults);
+      .addEventListener('click', () => this.showResults());
 
     document
       .getElementById('btn-shuffle')
-      .addEventListener('click', this.shuffleBoard);
+      .addEventListener('click', () => this.shuffleBoard());
   }
 
   shiftCell(cell) {
@@ -177,7 +177,31 @@ class Puzzle {
   showResults() {}
 
   shuffleBoard() {
-    const interval = setInterval(() => {}, 5);
+    let previousCell;
+
+    // const interval = setInterval(() => {
+    for (let i = 0; i < 100; i += 1) {
+      const emptyCell = this.getEmptyCell();
+      const adjacentCells = this.getAdjacentCells(emptyCell);
+
+      if (previousCell) {
+        for (let j = adjacentCells.length - 1; j >= 0; j -= 1) {
+          if (adjacentCells[j].innerHTML === previousCell.innerHTML) {
+            adjacentCells.splice(j, 1);
+          }
+        }
+      }
+
+      previousCell = adjacentCells[this.rand(0, adjacentCells.length - 1)];
+      this.shiftCell(previousCell);
+    }
+
+    // clearInterval(interval);
+    // }, 5);
+  }
+
+  rand(from, to) {
+    return Math.floor(Math.random() * (to - from + 1)) + from;
   }
 
   init() {
