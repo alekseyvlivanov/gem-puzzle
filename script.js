@@ -186,7 +186,7 @@ class Puzzle {
     if (this.shuffled) {
       if (this.checkSolved()) {
         this.shuffled = false;
-        setTimeout(() => alert('Ура! Вы решили головоломку'), 500);
+        setTimeout(() => alert('Ура! Вы решили головоломку'), 0);
       }
     }
   }
