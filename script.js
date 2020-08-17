@@ -14,6 +14,14 @@ class Puzzle {
     this.timerStart = 0;
     this.size = SIZES['4x4'];
     this.shuffled = false;
+    this.records = localStorage.getItem('records');
+
+    if (!this.records) {
+      this.records = {};
+      for (const key of Object.keys(SIZES)) {
+        this.records[key] = {};
+      }
+    }
   }
 
   createButtons() {
@@ -212,7 +220,7 @@ class Puzzle {
             alert(
               `Ура! Вы решили головоломку за ${this.timeCount.textContent} и ${this.moves} ходов`,
             ),
-          0,
+          250,
         );
       }
     }
