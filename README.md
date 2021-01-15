@@ -4,11 +4,11 @@
 | -------- | --------------- | ----------- |
 |          | gem-puzzle      | develop     |
 
-[![Netlify Status](https://api.netlify.com/api/v1/badges/591adc86-9e0b-48e8-9dd4-6c447cdd7715/deploy-status)](https://app.netlify.com/sites/gem-puzzle-chessiah/deploys)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/591adc86-9e0b-48e8-9dd4-6c447cdd7715/deploy-status)](https://app.netlify.com/sites/gem-puzzle-aleksey-vl-ivanov/deploys)
 
 You can see this project in action:
 
-- Netlify - <https://gem-puzzle.chessiah.com>
+- Netlify - <https://gem-puzzle.aleksey-vl-ivanov.com>
 
 ## Задание
 

@@ -1,6 +1,0 @@
-# Netlify redirects
-
-https://gem-puzzle-chessiah.netlify.app/* https://gem-puzzle.chessiah.com/:splat 301!
-http://gem-puzzle-chessiah.netlify.app/* https://gem-puzzle.chessiah.com/:splat 301!
-
-http://gem-puzzle.chessiah.com/* https://gem-puzzle.chessiah.com/:splat 301!
