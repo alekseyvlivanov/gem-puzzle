@@ -1,0 +1,17 @@
+[[redirects]]
+  from = "https://gem-puzzle-aleksey-vl-ivanov.netlify.app/*"
+  to = "https://gem-puzzle.aleksey-vl-ivanov.com/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "http://gem-puzzle-aleksey-vl-ivanov.netlify.app/*"
+  to = "https://gem-puzzle.aleksey-vl-ivanov.com/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "http://gem-puzzle.aleksey-vl-ivanov.com/*"
+  to = "https://gem-puzzle.aleksey-vl-ivanov.com/:splat"
+  status = 301
+  force = true

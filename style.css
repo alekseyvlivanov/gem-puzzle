@@ -1,0 +1,118 @@
+/* Variables */
+:root {
+  --main-bg-color: #dddddd;
+  --main-color: #111111;
+  --border-color: #111111;
+  --dark-color: #001f3f;
+  --light-color: #0074d9;
+  --btn-color: #001f3f;
+  --btn-text-color: #ffffff;
+  --number-color: #ffffff;
+}
+
+/* Reset CSS */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Main Styling */
+html {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 10px;
+}
+
+body {
+  background: var(--main-bg-color);
+  font-size: 1.6rem;
+  color: var(--main-color);
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+}
+
+.title {
+  margin: 2vmin auto;
+}
+
+.buttons {
+  margin: 0 auto;
+}
+
+.btn {
+  background: var(--btn-color);
+  font-weight: bolder;
+  margin: 8px 4px;
+  padding: 6px;
+  border: none;
+  border-radius: 4px;
+  color: var(--btn-text-color);
+  cursor: pointer;
+  outline: none;
+  user-select: none;
+}
+
+.btn-big {
+  font-size: 1.4rem;
+  text-transform: uppercase;
+}
+
+.btn-small {
+  font-size: 1.2rem;
+}
+
+.infoTop {
+  margin: 1vmin auto;
+}
+
+#moves {
+  margin-right: 15px;
+}
+
+.board {
+  display: grid;
+  grid-gap: 2px;
+  height: 60vmin;
+  width: 60vmin;
+  min-height: 300px;
+  min-width: 300px;
+  margin: 0 auto;
+  padding: 1px;
+  border: 5px solid var(--border-color);
+  border-radius: 5px;
+}
+
+.cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  user-select: none;
+}
+
+.number {
+  font-size: 6vmin;
+  font-weight: bold;
+  color: var(--number-color);
+  cursor: pointer;
+}
+
+.number.light {
+  background: var(--light-color);
+}
+
+.number.dark {
+  background: var(--dark-color);
+}
+
+.empty {
+  background: transparent;
+}
+
+.infoBottom {
+  margin: 1vmin auto;
+}
