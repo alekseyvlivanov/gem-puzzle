@@ -1,8 +1,12 @@
-# RSS Игра в пятнашки
+# RSS Gem Puzzle
 
 | Deadline | Repository name | Branch name |
 | -------- | --------------- | ----------- |
 |          | gem-puzzle      | develop     |
+
+You can see this project in action:
+
+- Cloudflare - <https://gem-puzzle.aleksey-vl-ivanov.com>
 
 ## Задание
 
@@ -85,7 +89,7 @@
 
 ## Полезные ссылки
 
-- [drag-end-drop](https://learn.javascript.ru/mouse-drag-and-drop)
+- [drag-and-drop](https://learn.javascript.ru/mouse-drag-and-drop)
 
 - [eslint](https://eslint.org/)
 - [TypeScript](https://www.typescriptlang.org/)
